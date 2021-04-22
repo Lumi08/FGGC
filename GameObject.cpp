@@ -25,7 +25,8 @@ void GameObject::Update(float t)
 
 	if (_type == "Cube ")
 	{
-		Debug::PrintDebugText(std::to_string(t));
+		_particleModel->Update(t);
+		//Debug::PrintDebugText(std::to_string(t));
 	}
 
 	XMStoreFloat4x4(&_world, scale * rotation * translation);

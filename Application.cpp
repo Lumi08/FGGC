@@ -158,7 +158,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	floorTransform->SetPosition(0.0f, 0.0f, 0.0f);
 	floorTransform->SetScale(15.0f, 15.0f, 15.0f);
 	floorTransform->SetRotation(XMConvertToRadians(90.0f), 0.0f, 0.0f);
-	ParticleModel* floorParticleModel = new ParticleModel(floorTransform, 0.02f);
+	ParticleModel* floorParticleModel = new ParticleModel(floorTransform, 0.02f, 0.01f);
 	Apperance* floorApperance = new Apperance(planeGeometry, noSpecMaterial);
 
 	GameObject* gameObject = new GameObject("Floor", floorTransform, floorParticleModel, floorApperance);
@@ -170,7 +170,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	cubeTransform->SetPosition(0.0f, 0.0f, 0.0f);
 	cubeTransform->SetScale(0.5f, 0.5f, 0.5f);
 	cubeTransform->SetRotation(XMConvertToRadians(90.0f), 0.0f, 0.0f);
-	ParticleModel* cubeParticleModel = new ParticleModel(cubeTransform, 0.02f);
+	ParticleModel* cubeParticleModel = new ParticleModel(cubeTransform, 0.02f, 0.01f);
 	Apperance* cubeApperance = new Apperance(cubeGeometry, shinyMaterial);
 
 	for (auto i = 0; i < NUMBER_OF_CUBES; i++)
@@ -186,7 +186,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	herculesTransform->SetPosition(-4.0f, 0.5f, 10.0f);
 	herculesTransform->SetScale(0.5f, 0.5f, 0.5f);
 	herculesTransform->SetRotation(XMConvertToRadians(90.0f), 0.0f, 0.0f);
-	ParticleModel* herculesParticleModel = new ParticleModel(herculesTransform, 0.02f);
+	ParticleModel* herculesParticleModel = new ParticleModel(herculesTransform, 0.02f, 0.01f);
 	Apperance* herculesApperance = new Apperance(herculesGeometry, shinyMaterial);
 	gameObject = new GameObject("donut", herculesTransform, herculesParticleModel, herculesApperance);
 	gameObject->GetApperance()->SetTextureRV(_pTextureRV);
@@ -691,20 +691,20 @@ void Application::Update()
 	}
 
 	// Move gameobject
-	if (GetAsyncKeyState('1'))
+	if (GetAsyncKeyState('1') & 0x8000)
 	{
 		_gameObjects[1]->GetParticleModel()->MoveForward();
 	}
-	if (GetAsyncKeyState('2'))
+	if (GetAsyncKeyState('2') & 0x8000)
 	{
 		_gameObjects[2]->GetParticleModel()->MoveForward();
 	}
 
-	if (GetAsyncKeyState('3'))
+	if (GetAsyncKeyState('3') & 0x8000)
 	{
 		_gameObjects[1]->GetParticleModel()->MoveBackward();
 	}
-	if (GetAsyncKeyState('4'))
+	if (GetAsyncKeyState('4') & 0x8000)
 	{
 		_gameObjects[2]->GetParticleModel()->MoveBackward();
 	}
