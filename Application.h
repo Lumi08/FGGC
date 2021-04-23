@@ -111,11 +111,17 @@ private:
 	vector<GameObject *> _gameObjects;
 
 	Camera * _camera = nullptr;
-	float _cameraOrbitRadius = 7.0f;
+	float _cameraOrbitRadius = 20.0f;
 	float _cameraOrbitRadiusMin = 2.0f;
 	float _cameraOrbitRadiusMax = 50.0f;
 	float _cameraOrbitAngleXZ = -90.0f;
 	float _cameraSpeed = 2.0f;
+
+	//keys
+	bool _wKeyPressed = false;
+	bool _aKeyPressed = false;
+	bool _sKeyPressed = false;
+	bool _dKeyPressed = false;
 
 	//Times
 	float _CurrentTime = 0;

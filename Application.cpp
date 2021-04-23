@@ -107,7 +107,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	//CreateDDSTextureFromFile(_pd3dDevice, L"Resources\\Hercules_COLOR.dds", nullptr, &_pHerculesTextureRV);
 
 	// Setup Camera
-	XMFLOAT3 eye = XMFLOAT3(0.0f, 2.0f, -1.0f);
+	XMFLOAT3 eye = XMFLOAT3(0.0f, 20.0f, 20.0f);
 	XMFLOAT3 at = XMFLOAT3(0.0f, 2.0f, 0.0f);
 	XMFLOAT3 up = XMFLOAT3(0.0f, 1.0f, 0.0f);
 
@@ -158,7 +158,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	floorTransform->SetPosition(0.0f, 0.0f, 0.0f);
 	floorTransform->SetScale(15.0f, 15.0f, 15.0f);
 	floorTransform->SetRotation(XMConvertToRadians(90.0f), 0.0f, 0.0f);
-	ParticleModel* floorParticleModel = new ParticleModel(floorTransform, 0.02f, 0.01f);
+	ParticleModel* floorParticleModel = new ParticleModel(floorTransform, false, XMFLOAT3(0.0f, 0.0f, 0.02f), XMFLOAT3(0.0f, 0.0f, 0.01f));
 	Apperance* floorApperance = new Apperance(planeGeometry, noSpecMaterial);
 
 	GameObject* gameObject = new GameObject("Floor", floorTransform, floorParticleModel, floorApperance);
@@ -170,7 +170,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	cubeTransform->SetPosition(0.0f, 0.0f, 0.0f);
 	cubeTransform->SetScale(0.5f, 0.5f, 0.5f);
 	cubeTransform->SetRotation(XMConvertToRadians(90.0f), 0.0f, 0.0f);
-	ParticleModel* cubeParticleModel = new ParticleModel(cubeTransform, 0.02f, 0.01f);
+	ParticleModel* cubeParticleModel = new ParticleModel(cubeTransform, false, XMFLOAT3(0.02f, 0.0f, 0.0f), XMFLOAT3(0.01f, 0.0f, 0.0f));
 	Apperance* cubeApperance = new Apperance(cubeGeometry, shinyMaterial);
 
 	for (auto i = 0; i < NUMBER_OF_CUBES; i++)
@@ -186,7 +186,7 @@ HRESULT Application::Initialise(HINSTANCE hInstance, int nCmdShow)
 	herculesTransform->SetPosition(-4.0f, 0.5f, 10.0f);
 	herculesTransform->SetScale(0.5f, 0.5f, 0.5f);
 	herculesTransform->SetRotation(XMConvertToRadians(90.0f), 0.0f, 0.0f);
-	ParticleModel* herculesParticleModel = new ParticleModel(herculesTransform, 0.02f, 0.01f);
+	ParticleModel* herculesParticleModel = new ParticleModel(herculesTransform, true, XMFLOAT3(0.0f, 0.0f, 0.02f), XMFLOAT3(0.0f, 0.0f, 0.01f));
 	Apperance* herculesApperance = new Apperance(herculesGeometry, shinyMaterial);
 	gameObject = new GameObject("donut", herculesTransform, herculesParticleModel, herculesApperance);
 	gameObject->GetApperance()->SetTextureRV(_pTextureRV);
@@ -691,23 +691,80 @@ void Application::Update()
 	}
 
 	// Move gameobject
-	if (GetAsyncKeyState('1') & 0x8000)
+	//W
+	if (GetAsyncKeyState(0x57) & 0x8000)
 	{
-		_gameObjects[1]->GetParticleModel()->MoveForward();
+		if (!_wKeyPressed)
+		{
+			_wKeyPressed = true;
+			_gameObjects[1]->GetParticleModel()->SetVelocity(XMFLOAT3(0.0f, 0.0f, 0.02f));
+			_gameObjects[1]->GetParticleModel()->SetAcceleration(XMFLOAT3(0.0f, 0.0f, 0.02f));
+			_gameObjects[1]->GetParticleModel()->SetAccelerating(true);
+		}
 	}
-	if (GetAsyncKeyState('2') & 0x8000)
+	else
 	{
-		_gameObjects[2]->GetParticleModel()->MoveForward();
+		_wKeyPressed = false;
 	}
 
-	if (GetAsyncKeyState('3') & 0x8000)
+	//A
+	if (GetAsyncKeyState(0x41) & 0x8000)
 	{
-		_gameObjects[1]->GetParticleModel()->MoveBackward();
+		if (!_aKeyPressed)
+		{
+			_aKeyPressed = true;
+			_gameObjects[1]->GetParticleModel()->SetVelocity(XMFLOAT3(-0.02f, 0.0f, 0.0f));
+			_gameObjects[1]->GetParticleModel()->SetAcceleration(XMFLOAT3(-0.02f, 0.0f, 0.0f));
+			_gameObjects[1]->GetParticleModel()->SetAccelerating(true);
+		}
 	}
-	if (GetAsyncKeyState('4') & 0x8000)
+	else
 	{
-		_gameObjects[2]->GetParticleModel()->MoveBackward();
+		_aKeyPressed = false;
 	}
+
+	//S
+	if (GetAsyncKeyState(0x53) & 0x8000)
+	{
+		if (!_sKeyPressed)
+		{
+			_sKeyPressed = true;
+			_gameObjects[1]->GetParticleModel()->SetVelocity(XMFLOAT3(0.0f, 0.0f, -0.02f));
+			_gameObjects[1]->GetParticleModel()->SetAcceleration(XMFLOAT3(0.0f, 0.0f, -0.02f));
+			_gameObjects[1]->GetParticleModel()->SetAccelerating(true);
+		}
+	}
+	else
+	{
+		_sKeyPressed = false;
+	}
+
+	//D
+	if (GetAsyncKeyState(0x44) & 0x8000)
+	{
+		if (!_dKeyPressed)
+		{
+			_dKeyPressed = true;
+			_gameObjects[1]->GetParticleModel()->SetVelocity(XMFLOAT3(0.02f, 0.0f, 0.0f));
+			_gameObjects[1]->GetParticleModel()->SetAcceleration(XMFLOAT3(0.02f, 0.0f, 0.0f));
+			_gameObjects[1]->GetParticleModel()->SetAccelerating(true);
+		}
+	}
+	else
+	{
+		_dKeyPressed = false;
+	}
+
+	if (GetAsyncKeyState('5') & 0x8000)
+	{
+		_gameObjects[1]->GetParticleModel()->SetAccelerating(false);
+	}
+
+	if (!_wKeyPressed && !_aKeyPressed && !_sKeyPressed && !_dKeyPressed)
+	{
+		_gameObjects[1]->GetParticleModel()->SetAccelerating(false);
+	}
+
 	// Update camera
 	float angleAroundZ = XMConvertToRadians(_cameraOrbitAngleXZ);
 

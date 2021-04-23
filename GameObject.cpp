@@ -23,11 +23,7 @@ void GameObject::Update(float t)
 	XMMATRIX rotation = XMMatrixRotationX(_transform->GetRotation().x) * XMMatrixRotationY(_transform->GetRotation().y) * XMMatrixRotationZ(_transform->GetRotation().z);
 	XMMATRIX translation = XMMatrixTranslation(_transform->GetPosition().x, _transform->GetPosition().y, _transform->GetPosition().z);
 
-	if (_type == "Cube ")
-	{
-		_particleModel->Update(t);
-		//Debug::PrintDebugText(std::to_string(t));
-	}
+	_particleModel->Update(t);
 
 	XMStoreFloat4x4(&_world, scale * rotation * translation);
 
